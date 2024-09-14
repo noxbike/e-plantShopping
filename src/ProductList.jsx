@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import { addItem, removeItem } from './CartSlice';
+import { addItem } from './CartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 function ProductList() {
@@ -254,12 +254,19 @@ const handlePlantsClick = (e) => {
   };
 
   const handleAddToCart = (product) => {
-    dispatch(addItem(product));
-    setAddedToCart((prevState) => ({
-        ...prevState,
-        [product.name]: true,
-    }));
-    console.log(addedToCart)
+    let found = false;
+    for (let item in cart){
+        if(cart[item].name === product.name){
+            found = true;
+        }
+    }
+    if(!found){
+        dispatch(addItem(product));
+        setAddedToCart((prevState) => ({
+            ...prevState,
+            [product.name]: true,
+        }));
+    }
   }
     return (
         <div>
@@ -295,7 +302,7 @@ const handlePlantsClick = (e) => {
                         <img className='product-image' src={plant.image} alt={plant.name}/>
                         <p className='product-price'>{plant.cost}</p>
                         <p>{plant.description}</p>
-                        <button onClick={() => handleAddToCart(plant)} className='product-button'>Add to Cart</button>
+                        <button onClick={() => handleAddToCart(plant)} className={`product-button ${addedToCart[plant.name] && "added-to-cart"}`}>Add to Cart</button>
                     </div>
                     )}
                 </div>

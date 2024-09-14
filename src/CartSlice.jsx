@@ -9,7 +9,6 @@ export const CartSlice = createSlice({
     addItem: (state, action) => {
       action.payload.quantity = 1;
       state.items.push(action.payload);
-      console.log("items added to cart");
     },
     removeItem: (state, action) => {
       let name = action.payload.name;
